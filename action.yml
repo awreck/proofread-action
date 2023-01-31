@@ -1,0 +1,10 @@
+name: 'Proofread PRs'
+description: 'Automatically spots spelling and grammar mistakes in PRs'
+inputs:
+  token:
+    description: 'GitHub Token'
+    required: true
+outputs:
+runs:
+  using: 'node16'
+  main: 'index.js'
