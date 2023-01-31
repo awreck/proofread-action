@@ -1,0 +1,12 @@
+on: [push]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    name: Testing the action
+    steps:
+      - name: Proofread PR
+        uses: ./
+        id: proofread
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
