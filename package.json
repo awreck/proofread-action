@@ -20,5 +20,10 @@
   "bugs": {
     "url": "https://github.com/awreck/proofread-action/issues"
   },
-  "homepage": "https://github.com/awreck/proofread-action#readme"
+  "homepage": "https://github.com/awreck/proofread-action#readme",
+  "dependencies": {
+    "@actions/core": "^1.10.0",
+    "@actions/github": "^5.1.1",
+    "axios": "^1.2.6"
+  }
 }
