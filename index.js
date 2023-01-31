@@ -16,8 +16,9 @@ const main = async () => {
             pull_number: github.context.payload.pull_request.number
         })
 
+        console.log(files)
+
         for (index1 in files) {
-            console.log(files)
             rawFile = await axios.get(files[index1].raw_url)
             console.log(rawFile.data)
             languageCheck = await axios.post('https://api.languagetoolplus.com/v2/check', {
