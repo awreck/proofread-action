@@ -16,6 +16,8 @@ const main = async () => {
             pull_number: github.context.payload.pull_request.number
         })
 
+        let comments = []
+
         for (index1 in files.data) {
             const rawFile = await axios.get(files.data[index1].raw_url)
             console.log(rawFile.data)
@@ -30,33 +32,37 @@ const main = async () => {
                 const tempstring = rawFile.data.substring(0, languageCheck.data.matches[index2].offset)
                 const line = tempstring.split('\n').length
 
-                console.log({
-                    owner: github.context.repo.owner,
-                    repo: github.context.repo.repo,
-                    pull_number: github.context.payload.pull_request.number,
-                    body: `**${languageCheck.data.matches[index2].shortMessage}**
-                    ${languageCheck.data.matches[index2].message}`,
-                    commit_id: github.context.payload.pull_request.head.sha,
+                const comment = {
+                    body: `**${languageCheck.data.matches[index2].shortMessage}**\n${languageCheck.data.matches[index2].message}`,
                     path: files.data[index1].filename,
                     line
-                })
+                }
 
-                const comment = await octokit.rest.pulls.createReviewComment({
-                    owner: github.context.repo.owner,
-                    repo: github.context.repo.repo,
-                    pull_number: github.context.payload.pull_request.number,
-                    body: `**${languageCheck.data.matches[index2].shortMessage}**
-                    ${languageCheck.data.matches[index2].message}`,
-                    commit_id: github.context.payload.pull_request.head.sha,
-                    path: files.data[index1].filename,
-                    line
-                })
+                comments.push(comment)
 
                 console.log(comment)
             }
 
             if (languageCheck.data.matches.length > 0) {
+                octokit.rest.pulls.createReview({
+                    owner: github.context.repo.owner,
+                    repo: github.context.repo.repo,
+                    pull_number: github.context.payload.pull_request.number,
+                    commit_id: github.context.payload.pull_request.head.sha,
+                    body: '🛑 There are spelling/grammar mistakes in your pull request. Please fix them before merging 🙏',
+                    event: 'REQUEST_CHANGES',
+                    comments
+                })
                 core.setFailed('There are spelling/grammar mistakes in your pull request.')
+            } else {
+                octokit.rest.pulls.createReview({
+                    owner: github.context.repo.owner,
+                    repo: github.context.repo.repo,
+                    pull_number: github.context.payload.pull_request.number,
+                    commit_id: github.context.payload.pull_request.head.sha,
+                    body: 'All good for merge 👍️',
+                    event: 'APPROVE'
+                })
             }
         }
     } catch (error) {
