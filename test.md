@@ -1,2 +1,2 @@
 # Test
-This are a test sentence.
+This is a test sentence.
