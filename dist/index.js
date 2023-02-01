@@ -16047,23 +16047,24 @@ const main = async () => {
         }
         const octokit = new github.getOctokit(core.getInput('token'))
 
-        files = await octokit.rest.pulls.listFiles({
+        const files = await octokit.rest.pulls.listFiles({
             owner: github.context.repo.owner,
             repo: github.context.repo.repo,
             pull_number: github.context.payload.pull_request.number
         })
 
+        console.log(files)
+
         for (index1 in files) {
-            console.log(files[index1].raw_url)
-            rawFile = await axios.get(files[index1].raw_url)
+            const rawFile = await axios.get(files[index1].raw_url)
             console.log(rawFile.data)
-            languageCheck = await axios.post('https://api.languagetoolplus.com/v2/check', {
+            const languageCheck = await axios.post('https://api.languagetoolplus.com/v2/check', {
                 text: rawFile.data,
                 language: 'en-US'
             })
             for (index2 in languageCheck.data.matches) {
-                tempstring = rawFile.data.substring(0, languageCheck.data.matches[index2].offset)
-                line = tempstring.split('\n').length
+                const tempstring = rawFile.data.substring(0, languageCheck.data.matches[index2].offset)
+                const line = tempstring.split('\n').length
 
                 await octokit.rest.pulls.createReviewComment({
                     user: github.context.repo.user,
