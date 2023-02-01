@@ -16069,7 +16069,7 @@ const main = async () => {
                 const line = tempstring.split('\n').length
 
                 console.log({
-                    user: github.context.repo.user,
+                    owner: github.context.repo.owner,
                     repo: github.context.repo.repo,
                     pull_number: github.context.payload.pull_request.number,
                     body: `**${languageCheck.data.matches[index2].shortMessage}**
@@ -16080,7 +16080,7 @@ const main = async () => {
                 })
 
                 const comment = await octokit.rest.pulls.createReviewComment({
-                    user: github.context.repo.owner,
+                    owner: github.context.repo.owner,
                     repo: github.context.repo.repo,
                     pull_number: github.context.payload.pull_request.number,
                     body: `**${languageCheck.data.matches[index2].shortMessage}**
