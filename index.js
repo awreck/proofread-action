@@ -19,13 +19,8 @@ const main = async () => {
         for (index1 in files.data) {
             const rawFile = await axios.get(files.data[index1].raw_url)
             console.log(rawFile.data)
-
-            const formData = new FormData()
-
-            formData.append('text', rawFile.data)
-            formData.append('language', 'en-US')
-
-            const languageCheck = await axios.post('https://api.languagetoolplus.com/v2/check', `text=${encodeURIComponent(formData)}&language=en-US`, {
+            
+            const languageCheck = await axios.post('https://api.languagetoolplus.com/v2/check', `text=${encodeURIComponent(rawFile.data)}&language=en-US`, {
                 headers: { "Content-Type": "application/x-www-form-urlencoded" }
             })
 
