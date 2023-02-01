@@ -29,6 +29,8 @@ const main = async () => {
                 headers: { "Content-Type": "application/x-www-form-urlencoded" }
             })
 
+            console.log(languageCheck.data)
+
             for (index2 in languageCheck.data.matches) {
                 const tempstring = rawFile.data.substring(0, languageCheck.data.matches[index2].offset)
                 const line = tempstring.split('\n').length
