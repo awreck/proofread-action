@@ -42,28 +42,28 @@ const main = async () => {
 
                 console.log(comment)
             }
+        }
 
-            if (languageCheck.data.matches.length > 0) {
-                await octokit.rest.pulls.createReview({
-                    owner: github.context.repo.owner,
-                    repo: github.context.repo.repo,
-                    pull_number: github.context.payload.pull_request.number,
-                    commit_id: github.context.payload.pull_request.head.sha,
-                    body: '🛑 There are spelling/grammar mistakes in your pull request. Please fix them before merging 🙏',
-                    event: 'REQUEST_CHANGES',
-                    comments
-                })
-                core.setFailed('There are spelling/grammar mistakes in your pull request.')
-            } else {
-                await octokit.rest.pulls.createReview({
-                    owner: github.context.repo.owner,
-                    repo: github.context.repo.repo,
-                    pull_number: github.context.payload.pull_request.number,
-                    commit_id: github.context.payload.pull_request.head.sha,
-                    body: 'All good for merge 👍️',
-                    event: 'APPROVE'
-                })
-            }
+        if (comments.length > 0) {
+            await octokit.rest.pulls.createReview({
+                owner: github.context.repo.owner,
+                repo: github.context.repo.repo,
+                pull_number: github.context.payload.pull_request.number,
+                commit_id: github.context.payload.pull_request.head.sha,
+                body: '🛑 There are spelling/grammar mistakes in your pull request. Please fix them before merging 🙏',
+                event: 'REQUEST_CHANGES',
+                comments
+            })
+            core.setFailed('There are spelling/grammar mistakes in your pull request.')
+        } else {
+            await octokit.rest.pulls.createReview({
+                owner: github.context.repo.owner,
+                repo: github.context.repo.repo,
+                pull_number: github.context.payload.pull_request.number,
+                commit_id: github.context.payload.pull_request.head.sha,
+                body: 'All good for merge 👍️',
+                event: 'APPROVE'
+            })
         }
     } catch (error) {
         core.setFailed(error.message)
