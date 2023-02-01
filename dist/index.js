@@ -16076,11 +16076,10 @@ const main = async () => {
             }
         }
 
-        const existingComments = await octokit.rest.pulls.listCommits({
+        const existingComments = octokit.request(`GET /repos/${github.context.repo.owner}/${github.context.repo.repo}/pulls/${github.context.payload.pull_request.number}/comments?per_page=100`, {
             owner: github.context.repo.owner,
             repo: github.context.repo.repo,
-            pull_number: github.context.payload.pull_request.number,
-            per_page: 100
+            pull_number: github.context.payload.pull_request.number
         })
 
         let resolved = []
