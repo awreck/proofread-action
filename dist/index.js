@@ -16067,18 +16067,20 @@ const main = async () => {
                 const tempstring = rawFile.data.substring(0, languageCheck.data.matches[index2].offset)
                 const line = tempstring.split('\n').length
 
-                console.log(github.context.payload)
+                console.log(github.context.payload.pull_request.head.sha)
 
-                await octokit.rest.pulls.createReviewComment({
+                const comment = await octokit.rest.pulls.createReviewComment({
                     user: github.context.repo.user,
                     repo: github.context.repo.repo,
                     pull_number: github.context.payload.pull_request.number,
                     body: `**${languageCheck.data.matches[index2].shortMessage}**
                     ${languageCheck.data.matches[index2].message}`,
-                    commit_id: github.context.event.pull_request.head.sha,
+                    commit_id: github.context.payload.pull_request.head.sha,
                     path: files.data[index1].filename,
                     line
                 })
+
+                console.log(comment)
             }
         }
     } catch (error) {
