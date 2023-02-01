@@ -62,12 +62,18 @@ const main = async () => {
                 continue
             }
 
+            let skip = false
+
             for (index2 in comments) {
                 if (comments[index2].body == existingComments.data[index1].body && comments[index2].path == existingComments.data[index1].path && comments[index2].line == existingComments.data[index1].line) {
                     nonResolved.push(existingComments[index1].id)
                     takenCareOf.push(comments[index2])
+                    skip = true
                     break
                 }
+            }
+
+            if (!skip) {
                 resolved.push(existingComments[index1])
             }
         }
@@ -75,10 +81,14 @@ const main = async () => {
         let reducedComments = []
 
         for (index1 in comments) {
+            let skip = false
             for (index2 in takenCareOf) {
                 if (comments[index1].body == takenCareOf[index2].body && comments[index1].path == takenCareOf[index2].path && comments[index1].line == takenCareOf[index2].line) {
+                    skip = true
                     break
                 }
+            }
+            if (!skip) {
                 reducedComments.push(comments[index2])
             }
         }
