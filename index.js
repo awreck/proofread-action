@@ -21,11 +21,11 @@ const main = async () => {
             console.log(rawFile.data)
 
             const formData = new FormData()
-            
+
             formData.append('text', rawFile.data)
             formData.append('language', 'en-US')
 
-            const languageCheck = await axios.post('https://api.languagetoolplus.com/v2/check', formData, {
+            const languageCheck = await axios.post('https://api.languagetoolplus.com/v2/check', `text=${encodeURIComponent(formData)}&language=en-US`, {
                 headers: { "Content-Type": "application/x-www-form-urlencoded" }
             })
 
