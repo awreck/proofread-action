@@ -1,5 +1,5 @@
 # Test
 ## testing
-This will many test sentence A new sentence. a most new sentence.
+This is many test sentences. A new sentence. A newer sentence.
 new commit
 another commit
