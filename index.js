@@ -30,6 +30,8 @@ const main = async () => {
                 const tempstring = rawFile.data.substring(0, languageCheck.data.matches[index2].offset)
                 const line = tempstring.split('\n').length
 
+                console.log(github.context.payload)
+
                 await octokit.rest.pulls.createReviewComment({
                     user: github.context.repo.user,
                     repo: github.context.repo.repo,
