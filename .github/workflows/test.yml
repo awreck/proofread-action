@@ -3,6 +3,7 @@ on: [pull_request]
 
 jobs:
   test:
+    permissions: write-all
     runs-on: ubuntu-latest
     name: Testing the action
     steps:
