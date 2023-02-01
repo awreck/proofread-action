@@ -16088,6 +16088,7 @@ const main = async () => {
         let takenCareOf = []
 
         for (index1 in existingComments.data) {
+            console.log(existingComments.data[index1])
             if (existingComments.data[index1].body.toLowerCase().includes('ignore')) {
                 resolved.push(existingComments.data[index1].in_reply_to_id)
                 continue
