@@ -89,7 +89,7 @@ const main = async () => {
                 }
             }
             if (!skip) {
-                reducedComments.push(comments[index2])
+                reducedComments.push(comments[index1])
             }
         }
 
