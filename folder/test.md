@@ -5,4 +5,4 @@ New commit.
 Another commit.
 
 
-another sentence
+Another sentence.
