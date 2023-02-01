@@ -16081,7 +16081,7 @@ const main = async () => {
             }
 
             if (languageCheck.data.matches.length > 0) {
-                octokit.rest.pulls.createReview({
+                await octokit.rest.pulls.createReview({
                     owner: github.context.repo.owner,
                     repo: github.context.repo.repo,
                     pull_number: github.context.payload.pull_request.number,
@@ -16092,7 +16092,7 @@ const main = async () => {
                 })
                 core.setFailed('There are spelling/grammar mistakes in your pull request.')
             } else {
-                octokit.rest.pulls.createReview({
+                await octokit.rest.pulls.createReview({
                     owner: github.context.repo.owner,
                     repo: github.context.repo.repo,
                     pull_number: github.context.payload.pull_request.number,
