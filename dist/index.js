@@ -16056,7 +16056,7 @@ const main = async () => {
         for (index1 in files.data) {
             const rawFile = await axios.get(files.data[index1].raw_url)
             console.log(rawFile.data)
-            
+
             const languageCheck = await axios.post('https://api.languagetoolplus.com/v2/check', `text=${encodeURIComponent(rawFile.data)}&language=en-US`, {
                 headers: { "Content-Type": "application/x-www-form-urlencoded" }
             })
@@ -16074,7 +16074,7 @@ const main = async () => {
                     body: `**${languageCheck.data.matches[index2].shortMessage}**
                     ${languageCheck.data.matches[index2].message}`,
                     commit_id: github.context.payload.pull_request.head.sha,
-                    path: files[index1].filename,
+                    path: files.data[index1].filename,
                     line
                 })
             }
