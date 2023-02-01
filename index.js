@@ -26,7 +26,7 @@ const main = async () => {
             formData.append('language', 'en-US')
 
             const languageCheck = await axios.post('https://api.languagetoolplus.com/v2/check', formData, {
-                headers: { "Content-Type": "multipart/form-data" }
+                headers: { "Content-Type": "application/x-www-form-urlencoded" }
             })
 
             for (index2 in languageCheck.data.matches) {
