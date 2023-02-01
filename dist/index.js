@@ -16053,10 +16053,8 @@ const main = async () => {
             pull_number: github.context.payload.pull_request.number
         })
 
-        console.log(files)
-
-        for (index1 in files) {
-            const rawFile = await axios.get(files[index1].raw_url)
+        for (index1 in files.data) {
+            const rawFile = await axios.get(files.data[index1].raw_url)
             console.log(rawFile.data)
             const languageCheck = await axios.post('https://api.languagetoolplus.com/v2/check', {
                 text: rawFile.data,
