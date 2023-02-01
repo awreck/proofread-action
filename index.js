@@ -68,7 +68,7 @@ const main = async () => {
             }
 
             if (!skip) {
-                resolved.push(existingComments.data[index1])
+                resolved.push(existingComments.data[index1].id)
             }
         }
 
@@ -91,7 +91,7 @@ const main = async () => {
             await octokit.rest.pulls.deleteReviewComment({
                 owner: github.context.repo.owner,
                 repo: github.context.repo.repo,
-                comment_id: resolved[index1].id
+                comment_id: resolved[index1]
             })
         }
         for (index1 in nonResolved) {
@@ -99,7 +99,7 @@ const main = async () => {
                 owner: github.context.repo.owner,
                 repo: github.context.repo.repo,
                 pull_number: github.context.payload.pull_request.number,
-                comment_id: nonResolved[index1].id,
+                comment_id: nonResolved[index1],
                 body: 'Error not resolved 😥'
             })
         }
