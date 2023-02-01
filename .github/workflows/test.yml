@@ -13,3 +13,7 @@ jobs:
         id: proofread
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Dump GitHub context
+        env:
+          GITHUB_CONTEXT: ${{ toJSON(github) }}
+        run: echo "$GITHUB_CONTEXT"
