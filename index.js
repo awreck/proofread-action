@@ -103,8 +103,8 @@ const main = async () => {
         //         body: 'Error not resolved 😥'
         //     })
         // }
-
-        console.log(reducedComments, resolved, nonResolved, takenCareOf)
+        //
+        // console.log(reducedComments, resolved, nonResolved, takenCareOf)
 
         if (comments.length > 0) {
             await octokit.rest.pulls.createReview({
