@@ -16038,6 +16038,7 @@ var __webpack_exports__ = {};
 const core = __nccwpck_require__(7526)
 const github = __nccwpck_require__(5855)
 const axios = __nccwpck_require__(5928)
+const path = __nccwpck_require__(1017)
 
 const main = async () => {
     try {
@@ -16067,8 +16068,6 @@ const main = async () => {
                 const tempstring = rawFile.data.substring(0, languageCheck.data.matches[index2].offset)
                 const line = tempstring.split('\n').length
 
-                console.log(github.context.payload.pull_request.head.sha)
-
                 const comment = await octokit.rest.pulls.createReviewComment({
                     user: github.context.repo.user,
                     repo: github.context.repo.repo,
@@ -16076,7 +16075,7 @@ const main = async () => {
                     body: `**${languageCheck.data.matches[index2].shortMessage}**
                     ${languageCheck.data.matches[index2].message}`,
                     commit_id: github.context.payload.pull_request.head.sha,
-                    path: files.data[index1].filename,
+                    path: path.dirname(files.data[index1].filename),
                     line
                 })
 

@@ -1,6 +1,7 @@
 const core = require('@actions/core')
 const github = require('@actions/github')
 const axios = require('axios')
+const path = require('path')
 
 const main = async () => {
     try {
@@ -30,8 +31,6 @@ const main = async () => {
                 const tempstring = rawFile.data.substring(0, languageCheck.data.matches[index2].offset)
                 const line = tempstring.split('\n').length
 
-                console.log(github.context.payload.pull_request.head.sha)
-
                 const comment = await octokit.rest.pulls.createReviewComment({
                     user: github.context.repo.user,
                     repo: github.context.repo.repo,
@@ -39,7 +38,7 @@ const main = async () => {
                     body: `**${languageCheck.data.matches[index2].shortMessage}**
                     ${languageCheck.data.matches[index2].message}`,
                     commit_id: github.context.payload.pull_request.head.sha,
-                    path: files.data[index1].filename,
+                    path: path.dirname(files.data[index1].filename),
                     line
                 })
 
