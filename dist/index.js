@@ -16058,13 +16058,9 @@ const main = async () => {
 
         for (index1 in files.data) {
             const rawFile = await axios.get(files.data[index1].raw_url)
-            console.log(rawFile.data)
-
             const languageCheck = await axios.post('https://api.languagetoolplus.com/v2/check', `text=${encodeURIComponent(rawFile.data)}&language=en-US`, {
                 headers: { "Content-Type": "application/x-www-form-urlencoded" }
             })
-
-            console.log(languageCheck.data)
 
             for (index2 in languageCheck.data.matches) {
                 const tempstring = rawFile.data.substring(0, languageCheck.data.matches[index2].offset)
@@ -16077,8 +16073,6 @@ const main = async () => {
                 }
 
                 comments.push(comment)
-
-                console.log(comment)
             }
         }
 
@@ -16146,6 +16140,8 @@ const main = async () => {
                 body: 'Error not resolved 😥'
             })
         }
+
+        console.log(reducedComments, resolved, nonResolved, takenCareOf)
 
         if (reducedComments.length > 0) {
             await octokit.rest.pulls.createReview({
