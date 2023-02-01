@@ -36,7 +36,7 @@ const main = async () => {
                     pull_number: github.context.payload.pull_request.number,
                     body: `**${languageCheck.data.matches[index2].shortMessage}**
                     ${languageCheck.data.matches[index2].message}`,
-                    commit_id: github.context.payload.pull_request.head.sha,
+                    commit_id: github.context.event.pull_request.head.sha,
                     path: files.data[index1].filename,
                     line
                 })
