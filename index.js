@@ -44,7 +44,7 @@ const main = async () => {
             }
         }
     } catch (error) {
-        core.setFailed(error.message)
+        core.setFailed(error)
     }
 }
 
