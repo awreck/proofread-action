@@ -25,7 +25,9 @@ const main = async () => {
             formData.append('text', rawFile.data)
             formData.append('language', 'en-US')
 
-            const languageCheck = await axios.post('https://api.languagetoolplus.com/v2/check', formData)
+            const languageCheck = await axios.post('https://api.languagetoolplus.com/v2/check', formData, {
+                headers: { "Content-Type": "multipart/form-data" }
+            })
 
             for (index2 in languageCheck.data.matches) {
                 const tempstring = rawFile.data.substring(0, languageCheck.data.matches[index2].offset)
@@ -44,7 +46,7 @@ const main = async () => {
             }
         }
     } catch (error) {
-        core.setFailed(error)
+        core.setFailed(error.message)
     }
 }
 
