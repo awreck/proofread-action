@@ -60,7 +60,7 @@ const main = async () => {
 
             for (index2 in comments) {
                 if (comments[index2].body == existingComments.data[index1].body && comments[index2].path == existingComments.data[index1].path && comments[index2].line == existingComments.data[index1].line) {
-                    nonResolved.push(existingComments[index1].id)
+                    nonResolved.push(existingComments.data[index1].id)
                     takenCareOf.push(comments[index2])
                     skip = true
                     break
@@ -68,7 +68,7 @@ const main = async () => {
             }
 
             if (!skip) {
-                resolved.push(existingComments[index1])
+                resolved.push(existingComments.data[index1])
             }
         }
 
