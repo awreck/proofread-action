@@ -14,3 +14,11 @@ jobs:
         id: proofread
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
+      - uses: ntsd/auto-request-changes-action@v2
+        if: ${{ failure() }}
+        with:
+          github-token: "${{ secrets.GITHUB_TOKEN }}"
+      - uses: hmarr/auto-approve-action@v2
+        if: ${{ success() }}
+        with:
+          github-token: "${{ secrets.GITHUB_TOKEN }}"

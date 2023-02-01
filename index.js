@@ -1,7 +1,6 @@
 const core = require('@actions/core')
 const github = require('@actions/github')
 const axios = require('axios')
-const path = require('path')
 
 const main = async () => {
     try {
@@ -54,6 +53,10 @@ const main = async () => {
                 })
 
                 console.log(comment)
+            }
+
+            if (languageCheck.data.matches.length > 0) {
+                core.setFailed('There are spelling/grammar mistakes in your pull request.')
             }
         }
     } catch (error) {

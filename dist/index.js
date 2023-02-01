@@ -16038,7 +16038,6 @@ var __webpack_exports__ = {};
 const core = __nccwpck_require__(7526)
 const github = __nccwpck_require__(5855)
 const axios = __nccwpck_require__(5928)
-const path = __nccwpck_require__(1017)
 
 const main = async () => {
     try {
@@ -16091,6 +16090,10 @@ const main = async () => {
                 })
 
                 console.log(comment)
+            }
+
+            if (languageCheck.data.matches.length > 0) {
+                core.setFailed('There are spelling/grammar mistakes in your pull request.')
             }
         }
     } catch (error) {
