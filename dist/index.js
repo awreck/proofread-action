@@ -16079,73 +16079,91 @@ const main = async () => {
             }
         }
 
-        const existingComments = await octokit.request(`GET /repos/${github.context.repo.owner}/${github.context.repo.repo}/pulls/${github.context.payload.pull_request.number}/comments?per_page=100`, {
-            owner: github.context.repo.owner,
-            repo: github.context.repo.repo,
-            pull_number: github.context.payload.pull_request.number
-        })
+        // const existingComments = await octokit.request(`GET /repos/${github.context.repo.owner}/${github.context.repo.repo}/pulls/${github.context.payload.pull_request.number}/comments?per_page=100`, {
+        //     owner: github.context.repo.owner,
+        //     repo: github.context.repo.repo,
+        //     pull_number: github.context.payload.pull_request.number
+        // })
 
-        let resolved = []
-        let nonResolved = []
-        let takenCareOf = []
-        let reducedComments = []
+        // let resolved = []
+        // let nonResolved = []
+        // let takenCareOf = []
+        // let reducedComments = []
 
-        for (index1 in existingComments.data) {
-            const existingComment = existingComments.data[index1]
-            console.log(existingComment)
-            if (existingComment.body.toLowerCase().includes('ignore')) {
-                resolved.push(existingComment.in_reply_to_id)
-                continue
+        // for (index1 in existingComments.data) {
+        //     const existingComment = existingComments.data[index1]
+        //     console.log(existingComment)
+        //     if (existingComment.body.toLowerCase().includes('ignore')) {
+        //         resolved.push(existingComment.in_reply_to_id)
+        //         continue
+        //     }
+
+        //     let shouldResolve = true
+
+        //     for (index2 in comments) {
+        //         const comment = comments[index2]
+        //         if (comment.body == existingComment.body && comment.path == existingComment.path && comment.line == existingComment.line) {
+        //             nonResolved.push(existingComment.id)
+        //             takenCareOf.push(comment)
+        //             shouldResolve = false
+        //         }
+        //     }
+
+        //     if (shouldResolve) {
+        //         resolved.push(existingComment.id)
+        //     }
+        // }
+
+        // for (index1 in comments) {
+        //     const comment = comments[index1]
+        //     let skip = false
+        //     for (index2 in takenCareOf) {
+        //         const takenCareOfComment = takenCareOf[index2]
+        //         if (comment.body == takenCareOfComment.body && comment.path == takenCareOfComment.path && comment.line == takenCareOfComment.line) {
+        //             skip = true
+        //         }
+        //     }
+        //     if (!skip) {
+        //         reducedComments.push(comment)
+        //     }
+        // }
+
+        // for (index1 in resolved) {
+        //     await octokit.rest.pulls.deleteReviewComment({
+        //         owner: github.context.repo.owner,
+        //         repo: github.context.repo.repo,
+        //         comment_id: resolved[index1]
+        //     })
+        // }
+        // for (index1 in nonResolved) {
+        //     await octokit.rest.pulls.createReplyForReviewComment({
+        //         owner: github.context.repo.owner,
+        //         repo: github.context.repo.repo,
+        //         pull_number: github.context.payload.pull_request.number,
+        //         comment_id: nonResolved[index1],
+        //         body: 'Error not resolved 😥'
+        //     })
+        // }
+
+        // console.log(reducedComments, resolved, nonResolved, takenCareOf)
+
+        const reducedComments = [
+            {
+                body: '****\nThis sentence does not start with an uppercase letter.',
+                path: 'folder/test.md',
+                line: 10
+            },
+            {
+                body: '****\nThe personal pronoun “I” should be uppercase.',
+                path: 'folder/test.md',
+                line: 10
+            },
+            {
+                body: '****\nThe personal pronoun “I” should be uppercase.',
+                path: 'folder/test.md',
+                line: 10
             }
-
-            let shouldResolve = true
-
-            for (index2 in comments) {
-                const comment = comments[index2]
-                if (comment.body == existingComment.body && comment.path == existingComment.path && comment.line == existingComment.line) {
-                    nonResolved.push(existingComment.id)
-                    takenCareOf.push(comment)
-                    shouldResolve = false
-                }
-            }
-
-            if (shouldResolve) {
-                resolved.push(existingComment.id)
-            }
-        }
-
-        for (index1 in comments) {
-            const comment = comments[index1]
-            let skip = false
-            for (index2 in takenCareOf) {
-                const takenCareOfComment = takenCareOf[index2]
-                if (comment.body == takenCareOfComment.body && comment.path == takenCareOfComment.path && comment.line == takenCareOfComment.line) {
-                    skip = true
-                }
-            }
-            if (!skip) {
-                reducedComments.push(comment)
-            }
-        }
-
-        for (index1 in resolved) {
-            await octokit.rest.pulls.deleteReviewComment({
-                owner: github.context.repo.owner,
-                repo: github.context.repo.repo,
-                comment_id: resolved[index1]
-            })
-        }
-        for (index1 in nonResolved) {
-            await octokit.rest.pulls.createReplyForReviewComment({
-                owner: github.context.repo.owner,
-                repo: github.context.repo.repo,
-                pull_number: github.context.payload.pull_request.number,
-                comment_id: nonResolved[index1],
-                body: 'Error not resolved 😥'
-            })
-        }
-
-        console.log(reducedComments, resolved, nonResolved, takenCareOf)
+        ]
 
         if (reducedComments.length > 0) {
             await octokit.rest.pulls.createReview({
