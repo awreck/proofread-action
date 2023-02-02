@@ -16053,20 +16053,20 @@ const main = async () => {
             repo: github.context.repo.repo,
             pull_number: github.context.payload.pull_request.number,
             per_page: 100
-        })
+        }).data
 
         let comments = []
 
-        for (index1 in files.data) {
-            const file = files.data[index1]
-            const rawFile = await axios.get(file.raw_url)
-            const languageCheck = await axios.post('https://api.languagetoolplus.com/v2/check', `text=${encodeURIComponent(rawFile.data)}&language=en-US`, {
+        for (index1 in files) {
+            const file = files[index1]
+            const rawFile = await axios.get(file.raw_url).data
+            const languageCheck = await axios.post('https://api.languagetoolplus.com/v2/check', `text=${encodeURIComponent(rawFile)}&language=en-US`, {
                 headers: { "Content-Type": "application/x-www-form-urlencoded" }
-            })
+            }).data
 
-            for (index2 in languageCheck.data.matches) {
-                const match = languageCheck.data.matches[index2]
-                const tempstring = rawFile.data.substring(0, match.offset)
+            for (index2 in languageCheck.matches) {
+                const match = languageCheck.matches[index2]
+                const tempstring = rawFile.substring(0, match.offset)
                 const line = tempstring.split('\n').length
 
                 const comment = {
@@ -16099,13 +16099,13 @@ const main = async () => {
             repo: github.context.repo.repo,
             pull_number: github.context.payload.pull_request.number,
             per_page: 100
-        })
+        }).data
 
         const reviews = await octokit.rest.pulls.listReviews({
             owner: github.context.repo.owner,
             repo: github.context.repo.repo,
             pull_number: github.context.payload.pull_request.number
-        })
+        }).data
 
         console.log(reviews)
 
@@ -16116,8 +16116,8 @@ const main = async () => {
 
         let existingCommentIds = existingComments.map(comment => comment.id)
 
-        for (index1 in existingComments.data) {
-            const existingComment = existingComments.data[index1]
+        for (index1 in existingComments) {
+            const existingComment = existingComments[index1]
             console.log(existingComment)
 
             let shouldResolve = true
