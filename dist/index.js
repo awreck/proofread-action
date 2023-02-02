@@ -16048,12 +16048,12 @@ const main = async () => {
 
         const octokit = new github.getOctokit(core.getInput('token'))
 
-        const files = await octokit.rest.pulls.listFiles({
+        const { data: files } = await octokit.rest.pulls.listFiles({
             owner: github.context.repo.owner,
             repo: github.context.repo.repo,
             pull_number: github.context.payload.pull_request.number,
             per_page: 100
-        }).data
+        })
 
         console.log(files)
 
@@ -16061,11 +16061,11 @@ const main = async () => {
 
         for (index1 in files) {
             const file = files[index1]
-            const rawFile = await axios.get(file.raw_url).data
+            const { data: rawFile } = await axios.get(file.raw_url)
             console.log(rawFile)
-            const languageCheck = await axios.post('https://api.languagetoolplus.com/v2/check', `text=${encodeURIComponent(rawFile)}&language=en-US`, {
+            const { data: languageCheck } = await axios.post('https://api.languagetoolplus.com/v2/check', `text=${encodeURIComponent(rawFile)}&language=en-US`, {
                 headers: { "Content-Type": "application/x-www-form-urlencoded" }
-            }).data
+            })
 
             console.log(languageCheck.matches)
 
@@ -16101,18 +16101,18 @@ const main = async () => {
             }
         }
 
-        const existingComments = await octokit.rest.pulls.listReviewComments({
+        const { data: existingComments } = await octokit.rest.pulls.listReviewComments({
             owner: github.context.repo.owner,
             repo: github.context.repo.repo,
             pull_number: github.context.payload.pull_request.number,
             per_page: 100
-        }).data
+        })
 
-        const reviews = await octokit.rest.pulls.listReviews({
+        const { data: reviews } = await octokit.rest.pulls.listReviews({
             owner: github.context.repo.owner,
             repo: github.context.repo.repo,
             pull_number: github.context.payload.pull_request.number
-        }).data
+        })
 
         console.log(reviews)
 
