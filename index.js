@@ -165,7 +165,7 @@ const main = async () => {
                 event: 'REQUEST_CHANGES',
                 comments: reducedComments
             })
-        } else {
+        } else if (comments.length !== nonResolved.length) {
             await octokit.rest.pulls.createReview({
                 owner: github.context.repo.owner,
                 repo: github.context.repo.repo,
