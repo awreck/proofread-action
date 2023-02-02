@@ -110,13 +110,20 @@ const main = async () => {
 
         console.log(reducedComments, resolved, nonResolved, takenCareOf)
 
-        if (reducedComments.length > 0) {
+        if (comments.length > 0) {
+            let message = ''
+            if (resolved.length == 0) {
+                message = '🛑 There are spelling/grammar mistakes in your pull request. Please fix them before merging 🙏\n*Pro tip: Reply "+ignore" to any comment to ignore that suggestion!*'
+            } else {
+                message = '✨ I see you\'ve fixed some of the mistakes in your pull request! Please fix the others before merging 🙏\n*Pro tip: Reply "+ignore" to any comment to ignore that suggestion!*'
+            }
+
             await octokit.rest.pulls.createReview({
                 owner: github.context.repo.owner,
                 repo: github.context.repo.repo,
                 pull_number: github.context.payload.pull_request.number,
                 commit_id: github.context.payload.pull_request.head.sha,
-                body: '🛑 There are spelling/grammar mistakes in your pull request. Please fix them before merging 🙏',
+                body: message,
                 event: 'REQUEST_CHANGES',
                 comments: reducedComments
             })
