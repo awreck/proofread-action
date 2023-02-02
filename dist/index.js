@@ -16128,9 +16128,11 @@ const main = async () => {
 
             for (index1 in existingComments) {
                 const existingComment = existingComments[index1]
-                console.log(existingComment)
 
                 let shouldResolve = true
+
+                console.log('existing comment', existingComment.in_reply_to_id)
+                console.log((existingComment.in_reply_to_id ? existingComments[existingCommentIds.indexOf(existingComment.in_reply_to_id)].user.login == 'github-actions[bot]' : false))
 
                 if (existingComment.body.toLowerCase().includes('+ignore') && (existingComment.in_reply_to_id ? existingComments[existingCommentIds.indexOf(existingComment.in_reply_to_id)].user.login == 'github-actions[bot]' : false)) {
                     resolved.push(existingComment.in_reply_to_id)
