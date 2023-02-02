@@ -16116,28 +16116,30 @@ const main = async () => {
 
         let existingCommentIds = existingComments.map(comment => comment.id)
 
-        for (index1 in existingComments) {
-            const existingComment = existingComments[index1]
-            console.log(existingComment)
+        if (existingComments) {
+            for (index1 in existingComments) {
+                const existingComment = existingComments[index1]
+                console.log(existingComment)
 
-            let shouldResolve = true
+                let shouldResolve = true
 
-            for (index2 in comments) {
-                const comment = comments[index2]
-                if (comment.body == existingComment.body && comment.path == existingComment.path && comment.line == existingComment.line) {
-                    if (existingComment.body.toLowerCase().includes('+ignore') && (existingComment.in_reply_to_id ? existingComments[existingCommentIds.indexOf(existingComment.in_reply_to_id)].user.login == 'github-actions[bot]' : false)) {
-                        resolved.push(existingComment.in_reply_to_id)
-                        shouldResolve = false
-                    } else {
-                        nonResolved.push(existingComment.id)
-                        shouldResolve = false
+                for (index2 in comments) {
+                    const comment = comments[index2]
+                    if (comment.body == existingComment.body && comment.path == existingComment.path && comment.line == existingComment.line) {
+                        if (existingComment.body.toLowerCase().includes('+ignore') && (existingComment.in_reply_to_id ? existingComments[existingCommentIds.indexOf(existingComment.in_reply_to_id)].user.login == 'github-actions[bot]' : false)) {
+                            resolved.push(existingComment.in_reply_to_id)
+                            shouldResolve = false
+                        } else {
+                            nonResolved.push(existingComment.id)
+                            shouldResolve = false
+                        }
+                        takenCareOf.push(comment)
                     }
-                    takenCareOf.push(comment)
                 }
-            }
 
-            if (shouldResolve && existingComment.user.login == 'github-actions[bot]') {
-                resolved.push(existingComment.id)
+                if (shouldResolve && existingComment.user.login == 'github-actions[bot]') {
+                    resolved.push(existingComment.id)
+                }
             }
         }
 
