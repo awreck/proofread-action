@@ -95,7 +95,7 @@ const main = async () => {
 
                 let shouldResolve = true
 
-                console.log('reactions', (existingComment.in_reply_to_id ? existingComments[existingCommentIds.indexOf(existingComment.in_reply_to_id)].user.login == 'github-actions[bot]' : false), existingComment.reactions, existingComment.reactions['-1'])
+                console.log('reactions', (existingComment.in_reply_to_id ? existingComments[existingCommentIds.indexOf(existingComment.in_reply_to_id)].user.login == 'github-actions[bot]' : false), existingComment.reactions, existingComments[existingCommentIds.indexOf(existingComment.in_reply_to_id)].user.login == 'github-actions[bot]', existingComment.reactions['-1'] > 0)
 
                 if (existingComment.reactions['-1'] > 0 && (existingComment.in_reply_to_id ? existingComments[existingCommentIds.indexOf(existingComment.in_reply_to_id)].user.login == 'github-actions[bot]' : false)) {
                     resolved.push(existingComment.in_reply_to_id)
