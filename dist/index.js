@@ -16131,10 +16131,7 @@ const main = async () => {
 
                 let shouldResolve = true
 
-                console.log('existing comment', existingComment.in_reply_to_id)
-                console.log((existingComment.in_reply_to_id ? existingComments[existingCommentIds.indexOf(existingComment.in_reply_to_id)].user.login == 'github-actions[bot]' : false))
-
-                if (existingComment.body.toLowerCase().includes('+ignore') && (existingComment.in_reply_to_id ? existingComments[existingCommentIds.indexOf(existingComment.in_reply_to_id)].user.login == 'github-actions[bot]' : false)) {
+                if (existingComment.reactions['-1'] > 0 && (existingComment.in_reply_to_id ? existingComments[existingCommentIds.indexOf(existingComment.in_reply_to_id)].user.login == 'github-actions[bot]' : false)) {
                     resolved.push(existingComment.in_reply_to_id)
                     shouldResolve = false
                     for (index2 in comments) {
@@ -16196,9 +16193,9 @@ const main = async () => {
         if (comments.length > 0) {
             let message = ''
             if (resolved.length == 0) {
-                message = '🛑 There are spelling/grammar mistakes in your pull request. Please fix them before merging 🙏\n*Pro tip: Reply "+ignore" to any comment to ignore that suggestion!*'
+                message = '🛑 There are spelling/grammar mistakes in your pull request. Please fix them before merging 🙏\n*Pro tip: React with 👎️ to any comment to ignore that suggestion!*'
             } else {
-                message = '✨ I see you\'ve fixed some of the mistakes in your pull request! Please fix the others before merging 🙏\n*Pro tip: Reply "+ignore" to any comment to ignore that suggestion!*'
+                message = '✨ I see you\'ve fixed some of the mistakes in your pull request! Please fix the others before merging 🙏\n*Pro tip: React with 👎️ to any comment to ignore that suggestion!*'
             }
 
             await octokit.rest.pulls.createReview({
