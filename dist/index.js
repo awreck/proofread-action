@@ -16055,14 +16055,19 @@ const main = async () => {
             per_page: 100
         }).data
 
+        console.log(files)
+
         let comments = []
 
         for (index1 in files) {
             const file = files[index1]
             const rawFile = await axios.get(file.raw_url).data
+            console.log(rawFile)
             const languageCheck = await axios.post('https://api.languagetoolplus.com/v2/check', `text=${encodeURIComponent(rawFile)}&language=en-US`, {
                 headers: { "Content-Type": "application/x-www-form-urlencoded" }
             }).data
+
+            console.log(languageCheck.matches)
 
             for (index2 in languageCheck.matches) {
                 const match = languageCheck.matches[index2]
