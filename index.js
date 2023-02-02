@@ -46,6 +46,8 @@ const main = async () => {
         const commentPaths = []
         const commentLines = []
 
+        console.log(comments)
+
         for (index1 in comments) {
             const comment = comments[index1]
             if (commentBodies.includes(comment.body) && commentPaths.includes(comment.path) && commentLines.includes(comment.line)) {
@@ -137,7 +139,7 @@ const main = async () => {
             })
         }
 
-        console.log(reducedComments, resolved, nonResolved, takenCareOf)
+        console.log(comments, reducedComments, resolved, nonResolved, takenCareOf)
 
         if (comments.length > 0) {
             let message = ''
