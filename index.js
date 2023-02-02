@@ -18,7 +18,7 @@ const main = async () => {
             per_page: 100
         })
 
-        const comments = []
+        let comments = []
 
         for (index1 in files) {
             const file = files[index1]
