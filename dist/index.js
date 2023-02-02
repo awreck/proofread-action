@@ -16114,9 +16114,9 @@ const main = async () => {
         let takenCareOf = []
         let reducedComments = []
 
-        let existingCommentIds = existingComments.map(comment => comment.id)
-
         if (existingComments) {
+            let existingCommentIds = existingComments.map(comment => comment.id)
+
             for (index1 in existingComments) {
                 const existingComment = existingComments[index1]
                 console.log(existingComment)
