@@ -8,6 +8,7 @@ const main = async () => {
             core.setFailed('This action only works on pull requests.')
             return
         }
+
         const octokit = new github.getOctokit(core.getInput('token'))
 
         const files = await octokit.rest.pulls.listFiles({
@@ -20,18 +21,20 @@ const main = async () => {
         let comments = []
 
         for (index1 in files.data) {
-            const rawFile = await axios.get(files.data[index1].raw_url)
+            const file = files.data[index1]
+            const rawFile = await axios.get(file.raw_url)
             const languageCheck = await axios.post('https://api.languagetoolplus.com/v2/check', `text=${encodeURIComponent(rawFile.data)}&language=en-US`, {
                 headers: { "Content-Type": "application/x-www-form-urlencoded" }
             })
 
             for (index2 in languageCheck.data.matches) {
-                const tempstring = rawFile.data.substring(0, languageCheck.data.matches[index2].offset)
+                const match = languageCheck.data.matches[index2]
+                const tempstring = rawFile.data.substring(0, match.offset)
                 const line = tempstring.split('\n').length
 
                 const comment = {
-                    body: `**${languageCheck.data.matches[index2].shortMessage}**\n${languageCheck.data.matches[index2].message}`,
-                    path: files.data[index1].filename,
+                    body: `**${match.shortMessage}**\n${match.message}`,
+                    path: file.filename,
                     line
                 }
 
@@ -48,42 +51,43 @@ const main = async () => {
         let resolved = []
         let nonResolved = []
         let takenCareOf = []
+        let reducedComments = []
 
         for (index1 in existingComments.data) {
-            console.log(existingComments.data[index1])
-            if (existingComments.data[index1].body.toLowerCase().includes('ignore')) {
-                resolved.push(existingComments.data[index1].in_reply_to_id)
+            const existingComment = existingComments.data[index1]
+            console.log(existingComment)
+            if (existingComment.body.toLowerCase().includes('ignore')) {
+                resolved.push(existingComment.in_reply_to_id)
                 continue
             }
 
-            let skip = false
+            let shouldResolve = true
 
             for (index2 in comments) {
-                if (comments[index2].body == existingComments.data[index1].body && comments[index2].path == existingComments.data[index1].path && comments[index2].line == existingComments.data[index1].line) {
-                    nonResolved.push(existingComments.data[index1].id)
-                    takenCareOf.push(comments[index2])
-                    skip = true
-                    break
+                const comment = comments[index2]
+                if (comment.body == existingComment.body && comment.path == existingComment.path && comment.line == existingComment.line) {
+                    nonResolved.push(existingComment.id)
+                    takenCareOf.push(comment)
+                    shouldResolve = false
                 }
             }
 
-            if (!skip) {
-                resolved.push(existingComments.data[index1].id)
+            if (shouldResolve) {
+                resolved.push(existingComment.id)
             }
         }
 
-        let reducedComments = []
-
         for (index1 in comments) {
+            const comment = comments[index1]
             let skip = false
             for (index2 in takenCareOf) {
-                if (comments[index1].body == takenCareOf[index2].body && comments[index1].path == takenCareOf[index2].path && comments[index1].line == takenCareOf[index2].line) {
+                const takenCareOfComment = takenCareOf[index2]
+                if (comment.body == takenCareOfComment.body && comment.path == takenCareOfComment.path && comment.line == takenCareOfComment.line) {
                     skip = true
-                    break
                 }
             }
             if (!skip) {
-                reducedComments.push(comments[index1])
+                reducedComments.push(comment)
             }
         }
 
@@ -103,7 +107,7 @@ const main = async () => {
                 body: 'Error not resolved 😥'
             })
         }
-        
+
         console.log(reducedComments, resolved, nonResolved, takenCareOf)
 
         if (reducedComments.length > 0) {
