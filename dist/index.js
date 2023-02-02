@@ -16079,37 +16079,64 @@ const main = async () => {
             }
         }
 
-        const existingComments = await octokit.request(`GET /repos/${github.context.repo.owner}/${github.context.repo.repo}/pulls/${github.context.payload.pull_request.number}/comments?per_page=100`, {
+        const commentBodies = []
+        const commentPaths = []
+        const commentLines = []
+
+        for (index1 in comments) {
+            const comment = comments[index1]
+            if (commentBodies.includes(comment.body) && commentPaths.includes(comment.path) && commentLines.includes(comment.line)) {
+                comment.body = comment.body + '\n**Note: This mistake occurs multiple times in this same line.**'
+            } else {
+                commentBodies.push(comment.body)
+                commentPaths.push(comment.path)
+                commentLines.push(comment.line)
+            }
+        }
+
+        const existingComments = await octokit.rest.pulls.listReviewComments({
+            owner: github.context.repo.owner,
+            repo: github.context.repo.repo,
+            pull_number: github.context.payload.pull_request.number,
+            per_page: 100
+        })
+
+        const reviews = await octokit.rest.pulls.listReviews({
             owner: github.context.repo.owner,
             repo: github.context.repo.repo,
             pull_number: github.context.payload.pull_request.number
         })
+
+        console.log(reviews)
 
         let resolved = []
         let nonResolved = []
         let takenCareOf = []
         let reducedComments = []
 
+        let existingCommentIds = existingComments.map(comment => comment.id)
+
         for (index1 in existingComments.data) {
             const existingComment = existingComments.data[index1]
             console.log(existingComment)
-            if (existingComment.body.toLowerCase().includes('ignore')) {
-                resolved.push(existingComment.in_reply_to_id)
-                continue
-            }
 
             let shouldResolve = true
 
             for (index2 in comments) {
                 const comment = comments[index2]
                 if (comment.body == existingComment.body && comment.path == existingComment.path && comment.line == existingComment.line) {
-                    nonResolved.push(existingComment.id)
+                    if (existingComment.body.toLowerCase().includes('+ignore') && (existingComment.in_reply_to_id ? existingComments[existingCommentIds.indexOf(existingComment.in_reply_to_id)].user.login == 'github-actions[bot]' : false)) {
+                        resolved.push(existingComment.in_reply_to_id)
+                        shouldResolve = false
+                    } else {
+                        nonResolved.push(existingComment.id)
+                        shouldResolve = false
+                    }
                     takenCareOf.push(comment)
-                    shouldResolve = false
                 }
             }
 
-            if (shouldResolve) {
+            if (shouldResolve && existingComment.user.login == 'github-actions[bot]') {
                 resolved.push(existingComment.id)
             }
         }
