@@ -16157,7 +16157,6 @@ const main = async () => {
                 event: 'REQUEST_CHANGES',
                 reducedComments
             })
-            core.setFailed('There are spelling/grammar mistakes in your pull request.')
         } else {
             await octokit.rest.pulls.createReview({
                 owner: github.context.repo.owner,
