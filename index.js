@@ -95,16 +95,22 @@ const main = async () => {
 
                 let shouldResolve = true
 
+                if (existingComment.body.toLowerCase().includes('+ignore') && (existingComment.in_reply_to_id ? existingComments[existingCommentIds.indexOf(existingComment.in_reply_to_id)].user.login == 'github-actions[bot]' : false)) {
+                    resolved.push(existingComment.in_reply_to_id)
+                    shouldResolve = false
+                    for (index2 in comments) {
+                        const comment = comments[index2]
+                        if (comment.body == existingComment.body && comment.path == existingComment.path && comment.line == existingComment.line) {
+                            takenCareOf.push(comment)
+                        }
+                    }
+                }
+
                 for (index2 in comments) {
                     const comment = comments[index2]
                     if (comment.body == existingComment.body && comment.path == existingComment.path && comment.line == existingComment.line) {
-                        if (existingComment.body.toLowerCase().includes('+ignore') && (existingComment.in_reply_to_id ? existingComments[existingCommentIds.indexOf(existingComment.in_reply_to_id)].user.login == 'github-actions[bot]' : false)) {
-                            resolved.push(existingComment.in_reply_to_id)
-                            shouldResolve = false
-                        } else {
-                            nonResolved.push(existingComment.id)
-                            shouldResolve = false
-                        }
+                        nonResolved.push(existingComment.id)
+                        shouldResolve = false
                         takenCareOf.push(comment)
                     }
                 }
