@@ -16147,23 +16147,9 @@ const main = async () => {
 
         // console.log(reducedComments, resolved, nonResolved, takenCareOf)
 
-        const reducedComments = [
-            {
-                body: '****\nThis sentence does not start with an uppercase letter.',
-                path: 'folder/test.md',
-                line: 10
-            },
-            {
-                body: '****\nThe personal pronoun “I” should be uppercase.',
-                path: 'folder/test.md',
-                line: 10
-            },
-            {
-                body: '****\nThe personal pronoun “I” should be uppercase.',
-                path: 'folder/test.md',
-                line: 10
-            }
-        ]
+        const reducedComments = comments
+
+        console.log(comments)
 
         if (reducedComments.length > 0) {
             await octokit.rest.pulls.createReview({
