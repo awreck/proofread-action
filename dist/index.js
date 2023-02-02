@@ -16117,6 +16117,7 @@ const main = async () => {
         })
 
         console.log(reviews)
+        console.log(existingComments)
 
         const resolved = []
         const nonResolved = []
@@ -16193,9 +16194,9 @@ const main = async () => {
         if (comments.length > 0) {
             let message = ''
             if (resolved.length == 0) {
-                message = '🛑 There are spelling/grammar mistakes in your pull request. Please fix them before merging 🙏\n*Pro tip: React with 👎️ to any comment to ignore that suggestion!*'
+                message = '🛑 There are spelling/grammar mistakes in your pull request. Please fix them before merging 🙏\n*Pro tip: React with 👎️ to any comment to hide that suggestion in the future!*'
             } else {
-                message = '✨ I see you\'ve fixed some of the mistakes in your pull request! Please fix the others before merging 🙏\n*Pro tip: React with 👎️ to any comment to ignore that suggestion!*'
+                message = '✨ I see you\'ve fixed some of the mistakes in your pull request! Please fix the others before merging 🙏\n*Pro tip: React with 👎️ to any comment to hide that suggestion in the future!*'
             }
 
             await octokit.rest.pulls.createReview({
