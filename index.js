@@ -18,19 +18,14 @@ const main = async () => {
             per_page: 100
         })
 
-        console.log(files)
-
-        let comments = []
+        const comments = []
 
         for (index1 in files) {
             const file = files[index1]
             const { data: rawFile } = await axios.get(file.raw_url)
-            console.log(rawFile)
             const { data: languageCheck } = await axios.post('https://api.languagetoolplus.com/v2/check', `text=${encodeURIComponent(rawFile)}&language=en-US`, {
                 headers: { "Content-Type": "application/x-www-form-urlencoded" }
             })
-
-            console.log(languageCheck.matches)
 
             for (index2 in languageCheck.matches) {
                 const match = languageCheck.matches[index2]
@@ -50,19 +45,26 @@ const main = async () => {
         const commentBodies = []
         const commentPaths = []
         const commentLines = []
-
-        console.log(comments)
+        const tempComments = []
 
         for (index1 in comments) {
             const comment = comments[index1]
             if (commentBodies.includes(comment.body) && commentPaths.includes(comment.path) && commentLines.includes(comment.line)) {
-                comment.body = comment.body + '\n**Note: This mistake occurs multiple times in this same line.**'
+                for (index2 in tempComments) {
+                    const tempComment = tempComments[index2]
+                    if (tempComment.body == comment.body && tempComment.path == comment.path && tempComment.line == comment.line) {
+                        tempComment.body = tempComment.body + '\n**Note: This mistake occurs multiple times in this same line.**'
+                    }
+                }
             } else {
                 commentBodies.push(comment.body)
                 commentPaths.push(comment.path)
                 commentLines.push(comment.line)
+                tempComments.push(comment)
             }
         }
+
+        comments = tempComments
 
         const { data: existingComments } = await octokit.rest.pulls.listReviewComments({
             owner: github.context.repo.owner,
@@ -79,13 +81,13 @@ const main = async () => {
 
         console.log(reviews)
 
-        let resolved = []
-        let nonResolved = []
-        let takenCareOf = []
-        let reducedComments = []
+        const resolved = []
+        const nonResolved = []
+        const takenCareOf = []
+        const reducedComments = []
 
         if (existingComments) {
-            let existingCommentIds = existingComments.map(comment => comment.id)
+            const existingCommentIds = existingComments.map(comment => comment.id)
 
             for (index1 in existingComments) {
                 const existingComment = existingComments[index1]
