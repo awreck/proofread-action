@@ -16132,7 +16132,13 @@ const main = async () => {
                 let shouldResolve = true
 
                 if (existingComment.reactions['-1'] > 0 && existingComment.user.login == 'github-actions[bot]') {
-                    resolved.push(existingComment.id)
+                    await octokit.rest.pulls.createReplyForReviewComment({
+                        owner: github.context.repo.owner,
+                        repo: github.context.repo.repo,
+                        pull_number: github.context.payload.pull_request.number,
+                        comment_id: existingComment.id,
+                        body: 'Will ignore this mistake in the future 👍️'
+                    })
                     shouldResolve = false
                     for (index2 in comments) {
                         const comment = comments[index2]
@@ -16175,18 +16181,10 @@ const main = async () => {
         console.log(comments, reducedComments, resolved, nonResolved, takenCareOf)
 
         for (index1 in resolved) {
-            // await octokit.rest.pulls.deleteReviewComment({
-            //     owner: github.context.repo.owner,
-            //     repo: github.context.repo.repo,
-            //     comment_id: resolved[index1]
-            // })
-
-            await octokit.rest.pulls.createReplyForReviewComment({
+            await octokit.rest.pulls.deleteReviewComment({
                 owner: github.context.repo.owner,
                 repo: github.context.repo.repo,
-                pull_number: github.context.payload.pull_request.number,
-                comment_id: resolved[index1],
-                body: 'Will ignore this mistake in the future 👍️'
+                comment_id: resolved[index1]
             })
         }
         for (index1 in nonResolved) {
