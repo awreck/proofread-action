@@ -186,7 +186,7 @@ const main = async () => {
             })
         }
     } catch (error) {
-        core.setFailed(error.message + error.line)
+        core.setFailed(error.message + ' ' + error)
     }
 }
 
