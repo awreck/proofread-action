@@ -16124,9 +16124,8 @@ const main = async () => {
         const reducedComments = []
 
         if (existingComments) {
-            const existingCommentIds = existingComments.map(comment => comment.id)
-
             for (index1 in existingComments) {
+                console.log(normalizeMultipleMistakes(existingComments[index1].body))
                 const existingComment = existingComments[index1]
 
                 let shouldResolve = true
