@@ -31,9 +31,14 @@ const main = async () => {
                 const match = languageCheck.matches[index2]
                 const tempstring = rawFile.substring(0, match.offset)
                 const line = tempstring.split('\n').length
+                const stringReplacements = []
+
+                for (index1 in match.replacements){
+                    stringReplacements.push(match.replacements[index1].value)
+                }
 
                 const comment = {
-                    body: `**${match.shortMessage}**\n${match.message}${match.replacements ? `\n**Possible replacements:** ${match.replacements.join(', ')}` : ''}`,
+                    body: `**${match.shortMessage}**\n${match.message}${match.stringReplacements ? `\n**Possible replacements:** ${match.stringReplacements.join(', ')}` : ''}`,
                     path: file.filename,
                     line
                 }
@@ -53,7 +58,7 @@ const main = async () => {
                 for (index2 in tempComments) {
                     const tempComment = tempComments[index2]
                     if (tempComment.body == comment.body && tempComment.path == comment.path && tempComment.line == comment.line) {
-                        tempComment.body = tempComment.body + '\n**Note: This mistake occurs multiple times in this same line.**'
+                        tempComment.body = tempComment.body + '\n\n**Note: This mistake occurs multiple times in this same line.**'
                     }
                 }
             } else {
@@ -195,7 +200,7 @@ const main = async () => {
 }
 
 function normalizeMultipleMistakes(body) {
-    return body.replace('\n**Note: This mistake occurs multiple times in this same line.**', '')
+    return body.replace('\n\n**Note: This mistake occurs multiple times in this same line.**', '')
 }
 
 main()
