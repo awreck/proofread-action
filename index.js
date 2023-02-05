@@ -164,7 +164,7 @@ const main = async () => {
                 message = '✨ I see you\'ve fixed some of the mistakes in your pull request! Please fix the others before merging 🙏\n*Pro tip: React with 👎️ to any comment to hide that suggestion in the future!*'
             }
 
-            await octokit.rest.pulls.createReview({
+            const review = await octokit.rest.pulls.createReview({
                 owner: github.context.repo.owner,
                 repo: github.context.repo.repo,
                 pull_number: github.context.payload.pull_request.number,
@@ -173,6 +173,8 @@ const main = async () => {
                 event: 'REQUEST_CHANGES',
                 comments: reducedComments
             })
+
+            console.log('review', review)
         } else if (comments.length !== nonResolved.length) {
             await octokit.rest.pulls.createReview({
                 owner: github.context.repo.owner,
