@@ -80,7 +80,6 @@ const main = async () => {
         })
 
         console.log(reviews)
-        console.log(existingComments)
 
         const resolved = []
         const nonResolved = []
@@ -135,6 +134,8 @@ const main = async () => {
             }
         }
 
+        console.log(comments, reducedComments, resolved, nonResolved, takenCareOf)
+
         for (index1 in resolved) {
             await octokit.rest.pulls.deleteReviewComment({
                 owner: github.context.repo.owner,
@@ -151,8 +152,6 @@ const main = async () => {
                 body: 'Error not resolved 😥'
             })
         }
-
-        console.log(comments, reducedComments, resolved, nonResolved, takenCareOf)
 
         if (comments.length > 0) {
             let message = ''
