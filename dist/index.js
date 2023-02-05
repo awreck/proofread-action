@@ -16075,7 +16075,7 @@ const main = async () => {
                 }
 
                 const comment = {
-                    body: `**${match.shortMessage}**\n${match.message}${stringReplacements ? `\n**Suggested replacements:** ${stringReplacements.join(', ')}` : ''}`,
+                    body: `**${match.shortMessage}**\n${match.message}\n\n**Context:** ${match.context.text}${stringReplacements ? `\n\n**Suggested replacements:** ${stringReplacements.join(', ')}` : ''}`,
                     path: file.filename,
                     line
                 }
