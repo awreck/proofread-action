@@ -7,4 +7,4 @@ Another commit.
 
 Another sentence.
 
-how do i test these awesome program that i built
+how do I test these awesome program that i built
