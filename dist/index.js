@@ -16140,6 +16140,7 @@ const main = async () => {
                             takenCareOf.push(comment)
                         }
                     }
+                    continue
                 }
 
                 for (index2 in comments) {
