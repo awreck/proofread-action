@@ -16134,7 +16134,7 @@ const main = async () => {
 
                 console.log('reactions', existingComment.in_reply_to_id, existingCommentIds.indexOf(existingComment.in_reply_to_id), existingComments[existingCommentIds.indexOf(existingComment.in_reply_to_id)])
 
-                if (existingComment.reactions['-1'] > 0 && (existingComment.in_reply_to_id ? existingComments[existingCommentIds.indexOf(existingComment.in_reply_to_id)].user.login == 'github-actions[bot]' : false)) {
+                if (existingComment.reactions['-1'] > 0 && existingComment.user.login == 'github-actions[bot]') {
                     resolved.push(existingComment.in_reply_to_id)
                     shouldResolve = false
                     for (index2 in comments) {
