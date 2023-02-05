@@ -16142,7 +16142,7 @@ const main = async () => {
                     shouldResolve = false
                     for (index2 in comments) {
                         const comment = comments[index2]
-                        if (comment.body == existingComment.body && comment.path == existingComment.path && comment.line == existingComment.line) {
+                        if (normalizeMultipleMistakes(comment.body) == normalizeMultipleMistakes(existingComment.body) && comment.path == existingComment.path && comment.line == existingComment.line) {
                             takenCareOf.push(comment)
                         }
                     }
@@ -16151,7 +16151,7 @@ const main = async () => {
 
                 for (index2 in comments) {
                     const comment = comments[index2]
-                    if (comment.body == existingComment.body && comment.path == existingComment.path && comment.line == existingComment.line) {
+                    if (normalizeMultipleMistakes(comment.body) == normalizeMultipleMistakes(existingComment.body) && comment.path == existingComment.path && comment.line == existingComment.line) {
                         nonResolved.push(existingComment.id)
                         shouldResolve = false
                         takenCareOf.push(comment)
@@ -16169,7 +16169,7 @@ const main = async () => {
             let skip = false
             for (index2 in takenCareOf) {
                 const takenCareOfComment = takenCareOf[index2]
-                if (comment.body == takenCareOfComment.body && comment.path == takenCareOfComment.path && comment.line == takenCareOfComment.line) {
+                if (normalizeMultipleMistakes(comment.body) == normalizeMultipleMistakes(takenCareOfComment.body) && comment.path == takenCareOfComment.path && comment.line == takenCareOfComment.line) {
                     skip = true
                 }
             }
@@ -16229,6 +16229,10 @@ const main = async () => {
     } catch (error) {
         core.setFailed(error.message + ' ' + error.stack)
     }
+}
+
+function normalizeMultipleMistakes(body) {
+    return body.replace('\n**Note: This mistake occurs multiple times in this same line.**', '')
 }
 
 main()
