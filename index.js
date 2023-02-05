@@ -95,10 +95,8 @@ const main = async () => {
 
                 let shouldResolve = true
 
-                console.log('reactions', existingComment.in_reply_to_id, existingCommentIds.indexOf(existingComment.in_reply_to_id), existingComments[existingCommentIds.indexOf(existingComment.in_reply_to_id)])
-
                 if (existingComment.reactions['-1'] > 0 && existingComment.user.login == 'github-actions[bot]') {
-                    resolved.push(existingComment.in_reply_to_id)
+                    resolved.push(existingComment.id)
                     shouldResolve = false
                     for (index2 in comments) {
                         const comment = comments[index2]
