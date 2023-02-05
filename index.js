@@ -33,7 +33,7 @@ const main = async () => {
                 const line = tempstring.split('\n').length
 
                 const comment = {
-                    body: `**${match.shortMessage}**\n${match.message}`,
+                    body: `**${match.shortMessage}**\n${match.message}${match.replacements ? `\n**Possible replacements:** ${match.replacements.join(', ')}` : ''}`,
                     path: file.filename,
                     line
                 }
