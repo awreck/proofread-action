@@ -16175,10 +16175,18 @@ const main = async () => {
         console.log(comments, reducedComments, resolved, nonResolved, takenCareOf)
 
         for (index1 in resolved) {
-            await octokit.rest.pulls.deleteReviewComment({
+            // await octokit.rest.pulls.deleteReviewComment({
+            //     owner: github.context.repo.owner,
+            //     repo: github.context.repo.repo,
+            //     comment_id: resolved[index1]
+            // })
+
+            await octokit.rest.pulls.createReplyForReviewComment({
                 owner: github.context.repo.owner,
                 repo: github.context.repo.repo,
-                comment_id: resolved[index1]
+                pull_number: github.context.payload.pull_request.number,
+                comment_id: resolved[index1],
+                body: 'Will ignore this mistake in the future 👍️'
             })
         }
         for (index1 in nonResolved) {
