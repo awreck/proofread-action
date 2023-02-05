@@ -16124,6 +16124,7 @@ const main = async () => {
         const reducedComments = []
 
         if (existingComments) {
+            console.log(existingComments)
             for (index1 in existingComments) {
                 console.log(normalizeMultipleMistakes(existingComments[index1].body))
                 const existingComment = existingComments[index1]
