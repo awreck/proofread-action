@@ -105,7 +105,7 @@ const main = async () => {
                     shouldResolve = false
                     for (index2 in comments) {
                         const comment = comments[index2]
-                        if (comment.body == existingComment.body && comment.path == existingComment.path && existingComment.line ? comment.line == existingComment.line : true) {
+                        if (comment.body == existingComment.body && comment.path == existingComment.path && (existingComment.line ? comment.line == existingComment.line : true)) {
                             takenCareOf.push(comment)
                         }
                     }
@@ -114,7 +114,7 @@ const main = async () => {
 
                 for (index2 in comments) {
                     const comment = comments[index2]
-                    if (comment.body == existingComment.body && comment.path == existingComment.path && existingComment.line ? comment.line == existingComment.line : true) {
+                    if (comment.body == existingComment.body && comment.path == existingComment.path && (existingComment.line ? comment.line == existingComment.line : true)) {
                         nonResolved.push(existingComment.id)
                         shouldResolve = false
                         takenCareOf.push(comment)
