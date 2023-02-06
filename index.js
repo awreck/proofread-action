@@ -90,9 +90,10 @@ const main = async () => {
         const reducedComments = []
 
         if (existingComments) {
-            console.log(existingComments)
             for (index1 in existingComments) {
                 const existingComment = existingComments[index1]
+                console.log('id', existingComment.id)
+                console.log('body', existingComment.body)
                 let shouldResolve = true
 
                 if (existingComment.reactions['-1'] > 0 && existingComment.user.login == 'github-actions[bot]') {
@@ -103,11 +104,15 @@ const main = async () => {
                         comment_id: existingComment.id,
                         body: 'Will ignore this mistake in the future 👍️'
                     })
+                    console.log('reaction id', existingComment.id)
+                    console.log('reaction body', existingComment.body)
                     shouldResolve = false
                     for (index2 in comments) {
                         const comment = comments[index2]
                         if (comment.body == existingComment.body && comment.path == existingComment.path && (existingComment.line ? comment.line == existingComment.line : true)) {
                             takenCareOf.push(comment)
+                            console.log('reaction takencare id', existingComment.id)
+                            console.log('reaction takencare body', existingComment.body)
                         }
                     }
                     continue
@@ -119,10 +124,14 @@ const main = async () => {
                         nonResolved.push(existingComment.id)
                         shouldResolve = false
                         takenCareOf.push(comment)
+                        console.log('nonresolved id', existingComment.id)
+                        console.log('nonresolved body', existingComment.body)
                     }
                 }
 
                 if (shouldResolve && existingComment.user.login == 'github-actions[bot]') {
+                    console.log('resolved id', existingComment.id)
+                    console.log('resolved body', existingComment.body)
                     resolved.push(existingComment.id)
                 }
             }
