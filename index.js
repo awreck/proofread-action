@@ -94,7 +94,7 @@ const main = async () => {
         if (existingComments) {
             console.log(existingComments)
             for (index1 in existingComments) {
-                console.log(normalizeMultipleMistakes(existingComments[index1].body))
+                console.log(existingComments[index1].body)
                 const existingComment = existingComments[index1]
 
                 let shouldResolve = true
@@ -110,7 +110,7 @@ const main = async () => {
                     shouldResolve = false
                     for (index2 in comments) {
                         const comment = comments[index2]
-                        if (normalizeMultipleMistakes(comment.body) == normalizeMultipleMistakes(existingComment.body) && comment.path == existingComment.path && comment.line == existingComment.line) {
+                        if (comment.body == existingComment.body && comment.path == existingComment.path && comment.line == existingComment.line) {
                             takenCareOf.push(comment)
                         }
                     }
@@ -119,7 +119,7 @@ const main = async () => {
 
                 for (index2 in comments) {
                     const comment = comments[index2]
-                    if (normalizeMultipleMistakes(comment.body) == normalizeMultipleMistakes(existingComment.body) && comment.path == existingComment.path && comment.line == existingComment.line) {
+                    if (comment.body == existingComment.body && comment.path == existingComment.path && comment.line == existingComment.line) {
                         nonResolved.push(existingComment.id)
                         shouldResolve = false
                         takenCareOf.push(comment)
@@ -137,7 +137,7 @@ const main = async () => {
             let skip = false
             for (index2 in takenCareOf) {
                 const takenCareOfComment = takenCareOf[index2]
-                if (normalizeMultipleMistakes(comment.body) == normalizeMultipleMistakes(takenCareOfComment.body) && comment.path == takenCareOfComment.path && comment.line == takenCareOfComment.line) {
+                if (comment.body == takenCareOfComment.body && comment.path == takenCareOfComment.path && comment.line == takenCareOfComment.line) {
                     skip = true
                 }
             }
@@ -197,10 +197,6 @@ const main = async () => {
     } catch (error) {
         core.setFailed(error.message + ' ' + error.stack)
     }
-}
-
-function normalizeMultipleMistakes(body) {
-    return body.replace('\n\n**Note: This mistake occurs multiple times in this same line.**', '')
 }
 
 main()
