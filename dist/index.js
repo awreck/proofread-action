@@ -16127,6 +16127,7 @@ const main = async () => {
         const reducedComments = []
 
         if (existingComments) {
+            console.log(existingComments)
             for (index1 in existingComments) {
                 const existingComment = existingComments[index1]
                 let shouldResolve = true
