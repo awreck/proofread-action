@@ -33,7 +33,7 @@ const main = async () => {
                 const line = tempstring.split('\n').length
                 const stringReplacements = []
 
-                for (index1 in match.replacements){
+                for (index1 in match.replacements) {
                     stringReplacements.push(match.replacements[index1].value)
                 }
 
@@ -110,7 +110,7 @@ const main = async () => {
                     shouldResolve = false
                     for (index2 in comments) {
                         const comment = comments[index2]
-                        if (comment.body == existingComment.body && comment.path == existingComment.path && comment.line == existingComment.line) {
+                        if (comment.body == existingComment.body && comment.path == existingComment.path && existingComment.line ? comment.line == existingComment.line : true) {
                             takenCareOf.push(comment)
                         }
                     }
@@ -119,7 +119,7 @@ const main = async () => {
 
                 for (index2 in comments) {
                     const comment = comments[index2]
-                    if (comment.body == existingComment.body && comment.path == existingComment.path && comment.line == existingComment.line) {
+                    if (comment.body == existingComment.body && comment.path == existingComment.path && existingComment.line ? comment.line == existingComment.line : true) {
                         nonResolved.push(existingComment.id)
                         shouldResolve = false
                         takenCareOf.push(comment)
