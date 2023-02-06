@@ -8,5 +8,3 @@ Another commit.
 Another sentence.
 
 how do I test these awesome program that i built
-
-anothe sentence foor testting
