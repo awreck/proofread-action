@@ -84,19 +84,14 @@ const main = async () => {
             pull_number: github.context.payload.pull_request.number
         })
 
-        console.log(reviews)
-
         const resolved = []
         const nonResolved = []
         const takenCareOf = []
         const reducedComments = []
 
         if (existingComments) {
-            console.log(existingComments)
             for (index1 in existingComments) {
-                console.log(existingComments[index1].body)
                 const existingComment = existingComments[index1]
-
                 let shouldResolve = true
 
                 if (existingComment.reactions['-1'] > 0 && existingComment.user.login == 'github-actions[bot]') {
@@ -182,8 +177,6 @@ const main = async () => {
                 event: 'REQUEST_CHANGES',
                 comments: reducedComments
             })
-
-            console.log('review', review)
         } else if (comments.length !== nonResolved.length) {
             await octokit.rest.pulls.createReview({
                 owner: github.context.repo.owner,
