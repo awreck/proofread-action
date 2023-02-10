@@ -16046,7 +16046,7 @@ const main = async () => {
             return
         }
 
-        const octokit = new github.getOctokit(core.getInput('token'))
+        const octokit = new github.getOctokit(core.getInput('token', { required: true }))
 
         const { data: files } = await octokit.rest.pulls.listFiles({
             owner: github.context.repo.owner,
