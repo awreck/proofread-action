@@ -23,7 +23,7 @@ const main = async () => {
         for (index1 in files) {
             const file = files[index1]
 
-            if (!file.filename.includes('.md')) {
+            if (!file.filename.endsWith('.md')) {
                 continue
             }
 
