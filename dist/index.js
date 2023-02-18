@@ -16224,6 +16224,17 @@ const main = async () => {
                 event: 'REQUEST_CHANGES',
                 comments: reducedComments
             })
+
+            console.log(review.data)
+
+            const reviewExpanded = await octokit.rest.pulls.listCommentsForReview({
+                owner: github.context.repo.owner,
+                repo: github.context.repo.repo,
+                pull_number: github.context.payload.pull_request.number,
+                review_id: review.data.id
+            })
+
+            console.log(reviewExpanded.data)
         } else if (comments.length !== nonResolved.length) {
             await octokit.rest.pulls.createReview({
                 owner: github.context.repo.owner,
