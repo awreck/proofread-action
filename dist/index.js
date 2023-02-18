@@ -16075,7 +16075,7 @@ const main = async () => {
                 }
 
                 const comment = {
-                    body: `**${match.shortMessage}**\n${match.message}\n\n**Context:** ${match.context.text}${stringReplacements ? `\n\n**Suggested replacements:** ${stringReplacements.join(', ')}` : ''}`,
+                    body: `**${match.shortMessage}**\n${match.message}${stringReplacements ? `\n\n**Suggested replacements:** ${stringReplacements.join(', ')}` : ''}`,
                     path: file.filename,
                     line
                 }
@@ -16157,7 +16157,7 @@ const main = async () => {
 
                 for (index2 in comments) {
                     const comment = comments[index2]
-                    if (comment.body == existingComment.body && comment.path == existingComment.path && (existingComment.line ? comment.line == existingComment.line : true)) {
+                    if (comment.body == existingComment.body && comment.path == existingComment.path && comment.line == existingComment.line) {
                         nonResolved.push(existingComment.id)
                         shouldResolve = false
                         takenCareOf.push(comment)
