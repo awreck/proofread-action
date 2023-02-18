@@ -9,4 +9,4 @@ Another sentence.
 
 how do i test these awesome program that i built; also why am i struggling so much
 
-something colorful
+something colorfull
