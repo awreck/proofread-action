@@ -78,12 +78,6 @@ const main = async () => {
             per_page: 100
         })
 
-        const { data: reviews } = await octokit.rest.pulls.listReviews({
-            owner: github.context.repo.owner,
-            repo: github.context.repo.repo,
-            pull_number: github.context.payload.pull_request.number
-        })
-
         const resolved = []
         const nonResolved = []
         const takenCareOf = []
@@ -178,7 +172,7 @@ const main = async () => {
                 message = '✨ I see you\'ve fixed some of the mistakes in your pull request! Please fix the others before merging 🙏\n*Pro tip: React with 👎️ to any comment to hide that suggestion in the future!*'
             }
 
-            const review = await octokit.rest.pulls.createReview({
+            const { data: review } = await octokit.rest.pulls.createReview({
                 owner: github.context.repo.owner,
                 repo: github.context.repo.repo,
                 pull_number: github.context.payload.pull_request.number,
@@ -188,23 +182,22 @@ const main = async () => {
                 comments: reducedComments
             })
 
-            const reviewComments = await octokit.rest.pulls.listCommentsForReview({
+            const { data: reviewComments } = await octokit.rest.pulls.listCommentsForReview({
                 owner: github.context.repo.owner,
                 repo: github.context.repo.repo,
                 pull_number: github.context.payload.pull_request.number,
-                review_id: review.data.id
+                review_id: review.id
             })
 
-            for (index1 in reviewComments.data) {
+            for (index1 in reviewComments) {
                 await octokit.rest.reactions.createForPullRequestReviewComment({
                     owner: github.context.repo.owner,
                     repo: github.context.repo.repo,
-                    comment_id: reviewComments.data[index1].id,
+                    comment_id: reviewComments[index1].id,
                     content: '-1'
                 })
             }
 
-            console.log(reviewExpanded.data)
         } else if (comments.length !== nonResolved.length) {
             await octokit.rest.pulls.createReview({
                 owner: github.context.repo.owner,
