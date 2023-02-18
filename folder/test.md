@@ -7,6 +7,6 @@ Another commit.
 
 Another sentence.
 
-how do I test these awesome program that i built
+how do i test these awesome program that i built
 
-someting colourful
+something colorful
