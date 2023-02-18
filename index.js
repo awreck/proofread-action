@@ -195,7 +195,7 @@ const main = async () => {
                 review_id: review.data.id
             })
 
-            for (index1 in reviewComments) {
+            for (index1 in reviewComments.data) {
                 await octokit.rest.reactions.createForPullRequestReviewComment({
                     owner: github.context.repo.owner,
                     repo: github.context.repo.repo,
