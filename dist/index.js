@@ -16059,6 +16059,11 @@ const main = async () => {
 
         for (index1 in files) {
             const file = files[index1]
+
+            if (!file.filename.includes('.md')) {
+                continue
+            }
+
             const { data: rawFile } = await axios.get(file.raw_url)
             const { data: languageCheck } = await axios.post('https://api.languagetoolplus.com/v2/check', `text=${encodeURIComponent(rawFile)}&language=en-US`, {
                 headers: { "Content-Type": "application/x-www-form-urlencoded" }
