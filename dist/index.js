@@ -16133,7 +16133,7 @@ const main = async () => {
                 console.log('body', existingComment.body)
                 let shouldResolve = true
 
-                if (existingComment.reactions['-1'] > 0 && existingComment.user.login == 'github-actions[bot]') {
+                if (existingComment.reactions['-1'] > 1 && existingComment.user.login == 'github-actions[bot]') {
                     await octokit.rest.pulls.createReplyForReviewComment({
                         owner: github.context.repo.owner,
                         repo: github.context.repo.repo,
@@ -16225,14 +16225,21 @@ const main = async () => {
                 comments: reducedComments
             })
 
-            console.log(review.data)
-
-            const reviewExpanded = await octokit.rest.pulls.listCommentsForReview({
+            const reviewComments = await octokit.rest.pulls.listCommentsForReview({
                 owner: github.context.repo.owner,
                 repo: github.context.repo.repo,
                 pull_number: github.context.payload.pull_request.number,
                 review_id: review.data.id
             })
+
+            for (index1 in reviewComments) {
+                await octokit.rest.reactions.createForPullRequestReviewComment({
+                    owner: github.context.repo.owner,
+                    repo: github.context.repo.repo,
+                    comment_id: reviewComments.data[index1].id,
+                    content: '-1'
+                })
+            }
 
             console.log(reviewExpanded.data)
         } else if (comments.length !== nonResolved.length) {
