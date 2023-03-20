@@ -18,7 +18,7 @@ jobs:
     name: Proofread PRs
     steps:
       - name: Proofread PR
-        uses: @awreck/proofread-action@v1
+        uses: awreck/proofread-action@v1
         id: proofread
         with:
           token: ${{ secrets.GITHUB_TOKEN }} # Required to write a PR review
